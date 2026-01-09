@@ -1,4 +1,4 @@
-import { MOBILE_BREAKPOINT } from "@/lib/contants"
+import { MOBILE_BREAKPOINT } from "@/lib/constants"
 import * as React from "react"
 
 
