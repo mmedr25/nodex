@@ -1,11 +1,11 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import { createTRPCContext } from '@/trpc/init';
 import { appRouter } from '@/trpc/routers/_app';
-import { TRPC_PATHNAME } from '@/lib/constants';
+import { API_ROUTES } from '@/lib/constants';
 
 const handler = (req: Request) =>
   fetchRequestHandler({
-    endpoint: TRPC_PATHNAME,
+    endpoint: API_ROUTES.trpc,
     req,
     router: appRouter,
     createContext: createTRPCContext,

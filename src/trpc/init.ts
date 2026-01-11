@@ -1,4 +1,6 @@
-import { initTRPC } from '@trpc/server';
+import { auth } from '@/features/auth/auth';
+import { initTRPC, TRPCError } from '@trpc/server';
+import { headers } from 'next/headers';
 import { cache } from 'react';
 import superjson from 'superjson';
 
@@ -24,3 +26,14 @@ const t = initTRPC.create({
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const publicProcedure = t.procedure;
+export const protectedProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  const session = auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'unauthorized' });
+  }
+  
+  return next({ ctx: { ...ctx, auth: session, } });
+});

@@ -7,7 +7,7 @@ import { createTRPCContext } from '@trpc/tanstack-react-query';
 import { useState } from 'react';
 import { makeQueryClient } from './query-client';
 import type { AppRouter } from './routers/_app';
-import { TRPC_PATHNAME } from '@/lib/constants';
+import { API_ROUTES } from '@/lib/constants';
 import superjson from 'superjson';
 
 
@@ -35,7 +35,7 @@ const baseURl = (() => {
 
 function getUrl() {
   const url = new URL(baseURl());
-  url.pathname = TRPC_PATHNAME;
+  url.pathname = API_ROUTES.trpc;
   return url.toString();
 }
 
