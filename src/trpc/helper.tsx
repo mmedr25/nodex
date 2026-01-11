@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { TRPCQueryOptions } from "@trpc/tanstack-react-query";
+import type { TRPCQueryOptions } from "@trpc/tanstack-react-query";
 import { getQueryClient } from "./server";
 
 export function HydrateClient(props: { children: React.ReactNode }) {

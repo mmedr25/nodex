@@ -1,9 +1,10 @@
 
-import { publicProcedure, createTRPCRouter } from '../init';
+import { createTRPCRouter, protectedProcedure } from '../init';
 
 export const appRouter = createTRPCRouter({
-  hello: publicProcedure
-    .query(() => ({
+  hello: protectedProcedure
+    .query(async ({ctx}) => ({
+        user:  (await (ctx.auth))?.session.userId,
         greeting: `hello hello project`,
     })),
 });

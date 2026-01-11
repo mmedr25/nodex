@@ -1,8 +1,11 @@
+"use client";
+import { authClient } from "@/features/auth/auth-client";
 
 export default function Home() {
+  const { data } = authClient.useSession();
   return (
     <div>
-      <p>hello</p>
+      {JSON.stringify(data)}
     </div>
   );
 }
