@@ -1,0 +1,44 @@
+<svg
+  width="120"
+  height="120"
+  viewBox="0 0 120 120"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Squircle Background -->
+  <path
+    d="
+      M60 6
+      C88 6 114 14 114 42
+      V78
+      C114 106 88 114 60 114
+      C32 114 6 106 6 78
+      V42
+      C6 14 32 6 60 6
+      Z
+    "
+    fill="#6518d8"
+  />
+
+  <!-- Dynamic Wavy Graph Stroke (unchanged) -->
+  <path
+    d="
+      M26 70
+      C38 44 54 86 68 60
+      C78 42 88 62 94 52
+    "
+    stroke="white"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <!-- Endpoint Raised Slightly -->
+  <circle
+    cx="96"
+    cy="48"
+    r="5"
+    fill="white"
+  />
+</svg>

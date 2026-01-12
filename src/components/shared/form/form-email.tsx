@@ -7,6 +7,7 @@ export function FormEmail() {
       label="Email"
       placeholder="you@example.com"
       type="email"
+      autoComplete="email"
     />
   );
 }
