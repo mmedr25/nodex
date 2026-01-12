@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "./features/auth/auth";
-import { API_ROUTES, AUTH_FORM_ROUTES, PUBLIC_ROUTES } from "./lib/constants";
+import { AUTH_FORM_ROUTES, PUBLIC_ROUTES } from "./lib/constants";
+import type { Route } from "next";
 
 
 const AUTH_LIST = Object.values(AUTH_FORM_ROUTES)
@@ -9,11 +10,6 @@ const AUTH_LIST = Object.values(AUTH_FORM_ROUTES)
 const PUBLIC_PATHS: string[] = [
     ...PUBLIC_ROUTES, //add public routes in constants.ts,
     ...AUTH_LIST,
-    ...Object.values(API_ROUTES),
-
-    // Next.js internals
-    "/_next",
-    "/favicon.ico",
 ];
 
 function isPublicRoute(pathname: string) {
@@ -24,8 +20,8 @@ function isPublicRoute(pathname: string) {
 }
 
 export async function proxy(req: NextRequest) {
-    const { pathname } = req.nextUrl;
-    const isAuthFormRoute = AUTH_LIST.includes(pathname)
+    const { pathname }  = req.nextUrl;
+    const isAuthFormRoute = AUTH_LIST.includes(pathname as Route) 
     // ✅ Allow public routes
     if (isPublicRoute(pathname)) {
         return NextResponse.next();
@@ -52,5 +48,14 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!_next/static|_next/image).*)"],
-};
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+  ],
+}

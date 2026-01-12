@@ -4,12 +4,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import type { EmailPasswordFormValues } from "./email-password";
 import { AUTH_FORM_ROUTES } from "@/lib/constants";
+import type { Route } from "next";
 
 export const useEmailPasswordAuth = () => {
     // Implement email-password authentication hooks here
     const router = useRouter();
     const searchParams = useSearchParams()
-    const redirect = searchParams.get("redirect") ?? "/";
+    const redirect = (searchParams.get("redirect") ?? "/") as Route ;
 
     const loginEmailPassword: SubmitHandler<EmailPasswordFormValues> = (data) => {
         authClient.signIn.email({

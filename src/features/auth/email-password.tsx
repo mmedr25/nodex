@@ -5,6 +5,7 @@ import { FormPassword } from "@/components/shared/form/form-password";
 import { FormSubmit } from "@/components/shared/form/form-Submit";
 import z from "zod/v3";
 import { useEmailPasswordAuth } from "./helper";
+import Link from "next/link";
 
 const emailPasswordDefaultValues = {
   email: "",
@@ -29,7 +30,9 @@ export const EmailPassword = () => {
       onSubmit={loginEmailPassword}
     >
       <FormEmail />
-      <FormPassword />
+      <FormPassword>
+        <Link href="/forgot-password" className="underline-offset-4 hover:underline text-destructive">Forgot password?</Link>
+      </FormPassword>
       <FormSubmit>Sign In</FormSubmit>
     </Form>
   );
