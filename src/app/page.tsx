@@ -1,11 +1,7 @@
-"use client";
-import { authClient } from "@/features/auth/auth-client";
-
-export default function Home() {
-  const { data } = authClient.useSession();
+export default async function Home() {
   return (
     <div>
-      {JSON.stringify(data)}
+      <p>home page</p>
     </div>
   );
 }

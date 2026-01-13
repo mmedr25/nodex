@@ -1,0 +1,31 @@
+
+services:
+  redis:
+    container_name: redis
+    image: redis:8.4.0-alpine
+    restart: unless-stopped
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - redis_db_data:/data
+
+  bullboard:
+    container_name: bullboard
+    image: deadly0/bull-board
+    restart: unless-stopped
+    ports:
+      - ${BULLMQ_PORT}:3000
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_USE_TLS: ${REDIS_USE_TLS}
+      BULL_PREFIX: bull
+      # REDIS_PASSWORD:
+      # USER_LOGIN:
+      # USER_PASSWORD:
+    depends_on:
+      - redis
+
+volumes:
+  redis_db_data:
+    external: false
