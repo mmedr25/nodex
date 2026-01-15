@@ -6,12 +6,15 @@ import type { EmailPasswordFormValues } from "./email-password";
 import { AUTH_FORM_ROUTES } from "@/lib/constants";
 import type { Route } from "next";
 
-export const useEmailPasswordAuth = () => {
+
+export const useAuth = () => {
     // Implement email-password authentication hooks here
     const router = useRouter();
     const searchParams = useSearchParams()
-    const redirect = (searchParams.get("redirect") ?? "/") as Route ;
 
+    const redirect = (searchParams.get("redirect") ?? "/") as Route;
+
+    // 
     const loginEmailPassword: SubmitHandler<EmailPasswordFormValues> = (data) => {
         authClient.signIn.email({
             email: data.email,
@@ -26,12 +29,7 @@ export const useEmailPasswordAuth = () => {
         });
     };
 
-    return { loginEmailPassword };
-}
-
-export const useLogout = () => {
-    const router = useRouter();
-
+    // 
     const logout = () => {
         authClient.signOut({
             fetchOptions: {
@@ -40,6 +38,8 @@ export const useLogout = () => {
                 },
             }
         })
-      }
-    return { logout };
+    }
+
+    return { loginEmailPassword, logout };
+
 }

@@ -4,8 +4,8 @@ import { FormEmail } from "@/components/shared/form/form-email";
 import { FormPassword } from "@/components/shared/form/form-password";
 import { FormSubmit } from "@/components/shared/form/form-Submit";
 import z from "zod/v3";
-import { useEmailPasswordAuth } from "./helper";
 import Link from "next/link";
+import { useAuth } from "./helper";
 
 const emailPasswordDefaultValues = {
   email: "",
@@ -21,7 +21,7 @@ export type EmailPasswordFormValues = z.infer<typeof emailPasswordFormSchema>;
 
  
 export const EmailPassword = () => {
-  const { loginEmailPassword } = useEmailPasswordAuth();
+  const { loginEmailPassword } = useAuth();
 
   return (
     <Form
