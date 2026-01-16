@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db";
 import { accounts, sessions, users, verifications } from "@/db/schema/auth";
+import { polarPlugin } from "../payment/polar/init";
 
 export const options = {
     
@@ -17,6 +18,9 @@ export const options = {
     // account: { modelName: "accounts" },
     // session: { modelName: "sessions" },
     // verification: { modelName: "verifications" },
+    plugins: [
+        polarPlugin()
+    ],
     // db configuration
     database: drizzleAdapter(db, {
         provider: "pg",
@@ -29,7 +33,7 @@ export const options = {
             verifications: verifications,
         }
     }),
-} satisfies Parameters<typeof betterAuth>[0];
+}
 
 export const auth = betterAuth(options);
 

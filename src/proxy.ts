@@ -7,13 +7,8 @@ import type { Route } from "next";
 
 const AUTH_LIST = Object.values(AUTH_FORM_ROUTES)
 
-const PUBLIC_PATHS: string[] = [
-    ...PUBLIC_ROUTES, //add public routes in constants.ts,
-    ...AUTH_LIST,
-];
-
 function isPublicRoute(pathname: string) {
-    return PUBLIC_PATHS.some(
+    return PUBLIC_ROUTES.some(
         (route) =>
             pathname === route || pathname.startsWith(route + "/")
     );

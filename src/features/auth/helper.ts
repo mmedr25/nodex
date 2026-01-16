@@ -23,7 +23,8 @@ export const useAuth = () => {
             onSuccess: () => {
                 router.push(redirect);
             },
-            onError: (err) => {
+            // TODO: change type
+            onError: (err: any) => {
                 toast.error(err.error.message);
             }
         });
