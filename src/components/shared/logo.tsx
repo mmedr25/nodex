@@ -18,7 +18,7 @@ function Logo({ className, href }: { className?: string; href?: Route }) {
       role={href ? "link" : "none"}
       className={cn("size-12", className, {"cursor-pointer": !!href})}
     >
-      <Image src={LogoIcon} alt={"app logo"} />
+      <Image src={LogoIcon} alt={"app logo"} preload />
     </div>
   );
 }

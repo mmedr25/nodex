@@ -24,12 +24,12 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 import { useAuth } from "@/features/auth/helper";
 import Logo from "./logo";
-import { useSidebar } from "@/components/ui/sidebar";
+import { paymentCheckout } from "@/features/payment/polar/helper";
 
 interface AppMenuItem {
   title: string;
@@ -67,7 +67,7 @@ const footerMenuItems = [
   {
     title: "Upgrade to pro",
     icon: StarIcon,
-    onClick: "",
+    onClick: "paymentCheckout",
   },
   {
     title: "Billing",
@@ -141,7 +141,7 @@ function SidebarGroupContentChild(props: Pick<AppMenuItem, "items">) {
 // TODO: change this function. Not well though out [footer and funcs, maybe not use a footer array]
 function AppSidebar() {
   const { logout } = useAuth();
-  const funcs = { logout } as any;
+  const funcs = { logout, paymentCheckout } as any;
 
   return (
     <Sidebar collapsible="icon" side="left" variant="sidebar">
