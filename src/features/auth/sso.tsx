@@ -6,8 +6,8 @@ export function SSO({title}: {title: string}) {
     <div className="flex flex-col items-center gap-3">
       <CardDescription>{title}</CardDescription>
       <div className="flex gap-3">
-        <ButtonLogo icon={"google"} alt="Google logo" title="Sign in with google" preload/>
-        <ButtonLogo icon={"github"} alt="GitHub logo" title="Sign in with github" preload/>
+        <ButtonLogo icon={"google"} alt="Google logo" title="Sign in with google" priority/>
+        <ButtonLogo icon={"github"} alt="GitHub logo" title="Sign in with github" priority/>
       </div>
     </div>
   );

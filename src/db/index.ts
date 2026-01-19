@@ -1,7 +1,12 @@
 import "@/lib/env-config"
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
+import { uuid } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 // synchronous connection and no need for singleton pattern 
-const sql = neon(process.env.DATABASE_URL!);
-export const db = drizzle({ client: sql, casing: 'snake_case'});
+const sqlClient = neon(process.env.DATABASE_URL!);
+export const db = drizzle({ client: sqlClient, casing: 'snake_case'});
+
+// shortcuts
+export const id = uuid("id").primaryKey().default(sql`uuid_generate_v7()`)

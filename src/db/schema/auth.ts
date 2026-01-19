@@ -1,10 +1,16 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, varchar, uuid } from "drizzle-orm/pg-core";
+import { workflows } from "./workflow";
+import { id } from "..";
 
 export const users = pgTable("users", {
-  id: text().primaryKey(),
-  name: text().notNull(),
-  email: text().notNull().unique(),
+  id,
+  firstName: varchar({ length: 256 }).notNull(),
+  lastName: varchar({ length: 256 }).notNull(),
+  // "name" is required by better-auth but don't not follow normalization standard.
+  // this field is optional and will be removed once the is a fix or loophole
+  name: varchar({ length: 256 }),
+  email: varchar({ length: 256 }).notNull().unique(),
   emailVerified: boolean().default(false).notNull(),
   image: text(),
   createdAt: timestamp().defaultNow().notNull(),
@@ -18,16 +24,16 @@ export const users = pgTable("users", {
 export const sessions = pgTable(
   "sessions",
   {
-    id: text().primaryKey(),
+    id,
     expiresAt: timestamp().notNull(),
     token: text().notNull().unique(),
     createdAt: timestamp().defaultNow().notNull(),
     updatedAt: timestamp()
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
-    ipAddress: text(),
+    ipAddress: varchar({ length: 256 }),
     userAgent: text(),
-    userId: text()
+    userId: uuid()
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
   },
@@ -38,12 +44,10 @@ export const sessions = pgTable(
 export const accounts = pgTable(
   "accounts",
   {
-    id: text().primaryKey(),
+    id,
     accountId: text().notNull(),
     providerId: text().notNull(),
-    userId: text()
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+    userId: uuid().notNull().references(() => users.id, { onDelete: "cascade" }),
     accessToken: text(),
     refreshToken: text(),
     idToken: text(),
@@ -62,7 +66,7 @@ export const accounts = pgTable(
 export const verifications = pgTable(
   "verifications",
   {
-    id: text().primaryKey(),
+    id,
     identifier: text().notNull(),
     value: text().notNull(),
     expiresAt: timestamp().notNull(),
@@ -78,6 +82,7 @@ export const verifications = pgTable(
 export const userRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
+  workflows: many(workflows),
 }));
 
 export const sessionRelations = relations(sessions, ({ one }) => ({
