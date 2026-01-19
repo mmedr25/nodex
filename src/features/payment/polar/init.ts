@@ -21,7 +21,7 @@ export const polarPlugin = () => polar({
                 }
             ],
             successUrl: process.env.POLAR_SUCCESS_URL,
-            authenticatedUsersOnly: true
+            authenticatedUsersOnly: true,
         }),
         portal()
     ],

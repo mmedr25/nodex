@@ -9,11 +9,11 @@ const Icons = {
   github: GithubIcon
 }
 
-export function ButtonLogo({icon, alt, title, preload}: {icon: "google" | "github", alt: string, title: string, preload?: boolean}): ReactElement {
+export function ButtonLogo({icon, alt, title, priority}: {icon: "google" | "github", alt: string, title: string, priority?: boolean}): ReactElement {
 
   return (
     <Button variant="outline" size="icon-lg" className="rounded-full" title={title}>
-      <Image alt={alt} src={Icons[icon]} width={24} height={24} preload={preload} />
+      <Image alt={alt} src={Icons[icon]} width={24} height={24} priority={priority} />
     </Button>
   );
 }

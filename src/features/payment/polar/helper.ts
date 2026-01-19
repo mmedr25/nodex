@@ -1,8 +1,7 @@
 import { authClient } from "@/features/auth/auth-client"
 
-export const paymentCheckout = ({email}: {email?: string}) => {
+export const paymentCheckout = () => {
     authClient.checkout({
         slug: "nodex",
-        email
     })
 }

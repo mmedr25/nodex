@@ -15,15 +15,17 @@ import { FormInput } from "@/components/shared/form/form-input";
 import { AUTH_FORM_ROUTES } from "@/lib/constants";
 
 const SignupDefaultValues = {
-  email: "john.doe@example.com",
-  name: "john doe",
+  email: "john.wane@google.com",
+  firstName: "john",
+  lastName: "wane",
   password: "12345678",
   passwordConfirm: "12345678",
 };
 
 const SignupFormSchema = z.object({
-  name: z.string().min(2).max(100),
-  email: z.string().email(),
+  firstName: z.string().min(2).max(256),
+  lastName: z.string().min(2).max(256),
+  email: z.string().email().max(256),
   password: z.string().min(8),
   passwordConfirm: z.string(),
 }).refine((data) => data.password === data.passwordConfirm, {
@@ -41,12 +43,14 @@ export const SignUp = () => {
     authClient.signUp.email({
       email: data.email,
       password: data.password,
-      name: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      name: [data.firstName, data.lastName].join(" ")
     }, {
-      onSuccess: () => {
+      onSuccess: (_) => {
         router.push(AUTH_FORM_ROUTES.signin);
       },
-      onError: (error) => {
+      onError: (_) => {
         router.push(AUTH_FORM_ROUTES.signin);
       }
     });
@@ -58,7 +62,8 @@ export const SignUp = () => {
       schema={SignupFormSchema}
       onSubmit={handleSubmit}
     >
-      <FormInput<SignupFormValues> label="Name" name="name" placeholder="John doe" />
+      <FormInput<SignupFormValues> label="Name" name="firstName" placeholder="John" />
+      <FormInput<SignupFormValues> label="Name" name="lastName" placeholder="Doe" />
       <FormEmail />
       <FormPassword />
       <FormPassword<SignupFormValues> label="Confirm Password" name="passwordConfirm" />
