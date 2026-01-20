@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { workflows } from "@/db/schema/workflow";
-import { and, eq, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, sql } from "drizzle-orm";
 
 // need to be owner to mod a workflow
 export const workflowRepo = {
@@ -37,6 +37,21 @@ export const workflowRepo = {
     findAll: db
         .select()
         .from(workflows)
-        .where(eq(workflows.userId, sql.placeholder("userId")))
-
+        .where(
+            and(
+                eq(workflows.userId, sql.placeholder("userId")),
+                ilike(workflows.name, sql.placeholder("search"))
+            )
+        )
+        .orderBy(
+            desc(workflows.updatedAt) // uuid7 is sortable by time. so the query is all find :-)
+        )
+        .limit(sql.placeholder("size"))
+        .offset(sql.placeholder("offset"))
+        .prepare("workflows_findAll"),
+    
+    count: db
+    .$count(workflows)
+    .getSQL()
+    
 }
