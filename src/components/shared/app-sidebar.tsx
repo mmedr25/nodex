@@ -5,8 +5,6 @@ import {
   FolderOpenIcon,
   HistoryIcon,
   KeyIcon,
-  KeyRoundIcon,
-  LogOut,
   LogOutIcon,
   StarIcon,
   type LucideIcon,
@@ -40,6 +38,12 @@ interface AppMenuItem {
   }>;
 }
 
+type ActionKey = NonNullable<
+  (typeof footerMenuItems)[number]["onClickFunctionName"]
+>;
+
+type ActionHandler = Record<ActionKey, () => void>;
+
 const menuItems: AppMenuItem[] = [
   {
     title: "workflows",
@@ -50,14 +54,14 @@ const menuItems: AppMenuItem[] = [
         href: "/workflows",
       },
       {
-        title: "Credentials",
-        icon: KeyIcon,
-        href: "/credentials",
-      },
-      {
         title: "Executions",
         icon: HistoryIcon,
         href: "/executions",
+      },
+      {
+        title: "Credentials",
+        icon: KeyIcon,
+        href: "/credentials",
       },
     ],
   },
@@ -67,19 +71,19 @@ const footerMenuItems = [
   {
     title: "Upgrade to pro",
     icon: StarIcon,
-    onClick: "paymentCheckout",
+    onClickFunctionName: "paymentCheckout",
   },
   {
     title: "Billing",
     icon: CreditCardIcon,
-    onClick: "",
+    onClickFunctionName: "",
   },
   {
     title: "Sign out",
     icon: LogOutIcon,
-    onClick: "logout",
+    onClickFunctionName: "logout",
   },
-];
+] as const;
 
 const CustomSidebarMenuButton = ({
   children,
@@ -141,14 +145,21 @@ function SidebarGroupContentChild(props: Pick<AppMenuItem, "items">) {
 // TODO: change this function. Not well though out [footer and funcs, maybe not use a footer array]
 function AppSidebar() {
   const { logout } = useAuth();
-  const funcs = { logout, paymentCheckout } as any;
+  const footerActions = {
+    logout,
+    paymentCheckout,
+  } as ActionHandler;
 
   return (
     <Sidebar collapsible="icon" side="left" variant="sidebar">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton role="none" className="p-0 group-data-[collapsible=icon]:p-0!" tooltip={"nodex"}>
+            <SidebarMenuButton
+              role="none"
+              className="p-0 group-data-[collapsible=icon]:p-0!"
+              tooltip={"nodex"}
+            >
               <Logo className="size-8 shrink-0" />
               <span className="capitalize font-semibold">nodex</span>
             </SidebarMenuButton>
@@ -172,14 +183,14 @@ function AppSidebar() {
 
       <SidebarFooter className="mb-8">
         <SidebarMenu>
-          {footerMenuItems.map((item) => (
-            <SidebarMenuItem key={item.title}>
+          {footerMenuItems.map(({ title, onClickFunctionName, icon }) => (
+            <SidebarMenuItem key={title}>
               <CustomSidebarMenuButton
-                tooltip={item.title}
-                onClick={funcs[item.onClick]}
+                tooltip={title}
+                onClick={footerActions[onClickFunctionName]}
               >
-                <SidebarMenuButtonContent icon={item.icon}>
-                  {item.title}
+                <SidebarMenuButtonContent icon={icon}>
+                  {title}
                 </SidebarMenuButtonContent>
               </CustomSidebarMenuButton>
             </SidebarMenuItem>

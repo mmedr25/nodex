@@ -1,5 +1,5 @@
 import WorkflowContainer from "@/features/workflow/components/workflow-container";
-import { prefetchWorkflows } from "@/features/workflow/query";
+import { prefetchWorkflows } from "@/features/workflow/prefetch";
 import { PAGINATION } from "@/lib/constants";
 import { HydrateClient } from "@/trpc/server";
 

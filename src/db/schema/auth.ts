@@ -1,24 +1,33 @@
-import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, varchar, uuid } from "drizzle-orm/pg-core";
+import { relations, SQL, sql } from "drizzle-orm";
+import { pgTable, text, timestamp, boolean, index, varchar, uuid, uniqueIndex, type AnyPgColumn } from "drizzle-orm/pg-core";
 import { workflows } from "./workflow";
 import { id } from "..";
+import { lower } from "../helper";
 
-export const users = pgTable("users", {
-  id,
-  firstName: varchar({ length: 256 }).notNull(),
-  lastName: varchar({ length: 256 }).notNull(),
-  // "name" is required by better-auth but don't not follow normalization standard.
-  // this field is optional and will be removed once the is a fix or loophole
-  name: varchar({ length: 256 }),
-  email: varchar({ length: 256 }).notNull().unique(),
-  emailVerified: boolean().default(false).notNull(),
-  image: text(),
-  createdAt: timestamp().defaultNow().notNull(),
-  updatedAt: timestamp()
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
+
+
+export const users = pgTable(
+  "users",
+  {
+    id,
+    firstName: varchar({ length: 256 }).notNull(),
+    lastName: varchar({ length: 256 }).notNull(),
+    // "name" is required by better-auth but don't not follow normalization standard.
+    // this field is optional and will be removed once the is a fix or loophole
+    name: varchar({ length: 256 }),
+    email: varchar({ length: 256 }).notNull().unique(),
+    emailVerified: boolean().default(false).notNull(),
+    image: text(),
+    createdAt: timestamp().defaultNow().notNull(),
+    updatedAt: timestamp()
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [
+    // uniqueIndex('emailUniqueIndex').on(sql`(lower(${table.email}))`),
+    uniqueIndex('emailUniqueIndex').on(lower(table.email)),
+  ]);
 
 
 export const sessions = pgTable(
@@ -79,6 +88,8 @@ export const verifications = pgTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+
+// orm relations
 export const userRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),

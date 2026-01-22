@@ -19,7 +19,9 @@ export const workflowRouter = tRouter({
     getOne: protectedProcedure
         .input(z.object({ id: z.string().uuid() }))
         .query(async ({ ctx, input }) => {
-            return (await workflowRepo.findById.execute({ id: input.id, userId: ctx.auth.user.id }))[0]
+            const rows = (await workflowRepo.findById.execute({ id: input.id, userId: ctx.auth.user.id }))
+
+            return rows
         }),
 
     getMany: premiumProcedure
